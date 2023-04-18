@@ -1,0 +1,409 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta http-equiv="X-UA-Compatible" content="IE=edge" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>成績計算網站01</title>
+    <link
+      rel="stylesheet"
+      href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.3.0/css/all.min.css"
+      integrity="sha512-SzlrxWUlpfuzQ+pcUCosxcglQRNAq/DZjVsC0lE40xsADsfeQoEypE+enwcOiGjk/bSuGGKHEyjSoQ1zVisanQ=="
+      crossorigin="anonymous"
+      referrerpolicy="no-referrer"
+    />
+    <script
+      src="https://cdnjs.cloudflare.com/ajax/libs/gsap/2.1.3/TweenMax.min.js"
+      integrity="sha512-DkPsH9LzNzZaZjCszwKrooKwgjArJDiEjA5tTgr3YX4E6TYv93ICS8T41yFHJnnSmGpnf0Mvb5NhScYbwvhn2w=="
+      crossorigin="anonymous"
+      referrerpolicy="no-referrer"
+    ></script>
+    <!-- <link rel="stylesheet" href="style/style.css" /> -->
+    <style>
+      @font-face {
+        font-family: "Baloo";
+        src: url(/Baloo_2/Baloo2-VariableFont_wght.ttf);
+      }
+      * {
+        font-family: "Baloo";
+        box-sizing: border-box;
+        margin: 0;
+        padding: 0;
+        color: white;
+        background-color: #272727;
+      }
+      * button {
+        cursor: pointer;
+      }
+
+      .animation-wrapper {
+        width: 100%;
+        height: 100%;
+        position: fixed;
+        top: 0;
+        left: 0;
+        background-color: white;
+        z-index: 1;
+      }
+
+      .animation-wrapper {
+        position: fixed;
+        top: 0;
+        left: 0;
+        width: 100%;
+        height: 100vh;
+        background-color: white;
+      }
+      .animation-wrapper section.animation {
+        margin-top: 10vh;
+        height: 80vh;
+        display: flex;
+        justify-content: center;
+        align-items: center;
+      }
+      .animation-wrapper section.animation div.image {
+        width: 100%;
+        height: 0vh;
+      }
+      .animation-wrapper section.animation div.image img {
+        width: 100%;
+        height: 100%;
+        -o-object-fit: cover;
+        object-fit: cover;
+      }
+      .animation-wrapper div.silder {
+        position: absolute;
+        top: 0;
+        left: 0;
+        width: 100%;
+        height: 100vh;
+        background: linear-gradient(to right, rgb(144, 144, 144), rgb(0, 0, 0));
+        z-index: -1;
+      }
+
+      body {
+        text-align: center;
+      }
+      body header nav {
+        box-shadow: 0 8px 6px -6px black;
+        padding: 0.5rem;
+      }
+      body header nav ul {
+        display: flex;
+        list-style: none;
+      }
+      body header nav ul li a {
+        text-decoration: none;
+        font-size: 1.15rem;
+        padding: 0px 1rem;
+      }
+      body header nav ul li a:hover {
+        color: yellow;
+        font-size: 1.3rem;
+        transition: all 0.5s;
+      }
+      body main {
+        margin: 10px;
+      }
+      body main section.main-part {
+        display: flex;
+        flex-direction: column;
+        justify-content: center;
+        align-content: center;
+      }
+      body main section.main-part h1 {
+        font-size: 2.5rem;
+      }
+      body main section.main-part section.sort-button button {
+        background-color: white;
+        color: black;
+        width: 110px;
+        border-radius: 5px;
+        padding: 5px;
+        margin: 0px 10px 10px 0px;
+      }
+      body main section.main-part section.main-form form.form1 input {
+        background-color: white;
+        color: black;
+        border-radius: 5px;
+        padding: 4px;
+        margin: 5px;
+      }
+      body main section.main-part section.main-form select#score {
+        background-color: white;
+        color: black;
+        padding: 0px 3px;
+      }
+      body main section.main-part section.main-form button.trash {
+        background-color: #272727;
+        border: none;
+        font-size: 1.5rem;
+        margin: 5px;
+      }
+      body main section.main-part #add {
+        border: none;
+        margin: 20px auto;
+      }
+      body main section.main-part #add i {
+        font-size: 2.5rem;
+      }
+      body main section.main-part div.result {
+        border: 2px red solid;
+        border-radius: 50%;
+        width: 250px;
+        height: 250px;
+        margin: auto;
+        display: flex;
+        flex-direction: column;
+        justify-content: center;
+        overflow: hidden;
+        animation-name: color_change;
+        animation-duration: 8s;
+        animation-iteration-count: infinite;
+      }
+      body main section.main-part div.result p {
+        font-size: 1.2rem;
+      }
+      body main section.main-part div.result h2 {
+        font-size: 3rem;
+      }
+
+      @keyframes scaleDown {
+        from {
+          transform: scale(1);
+        }
+        to {
+          transform: scale(0);
+        }
+      }
+      @keyframes scaleUp {
+        from {
+          transform: scale(0);
+        }
+        to {
+          transform: scale(1);
+        }
+      }
+      @keyframes color_change {
+        0% {
+          border-color: red;
+        }
+        33% {
+          border-color: lightgreen;
+        }
+        66% {
+          border-color: yellow;
+        }
+      } /*# sourceMappingURL=style.css.map */
+    </style>
+  </head>
+  <body>
+    <header>
+      <nav>
+        <ul>
+          <li><a href="#">Home</a></li>
+          <li><a href="#">Grade Analysis</a></li>
+          <li><a href="#">Terms of Service</a></li>
+        </ul>
+      </nav>
+    </header>
+    <!-- <section class="animation-wrapper">
+      <section class="animation">
+        <div class="image">
+          <img src="math.jpg" alt="math" />
+        </div>
+      </section>
+      <div class="silder"></div>
+    </section> -->
+
+    <main>
+      <section class="main-part">
+        <h1>Grade Input Form</h1>
+        <section class="sort-button">
+          <button class="sortButton sort-ascending">Ascending Sort</button>
+          <button class="sortButton sort-descending">Descending Sort</button>
+        </section>
+
+        <section class="main-form">
+          <form class="form1">
+            <input
+              type="text"
+              placeholder="class category"
+              class="class-category"
+              list="opt"
+            /><!--
+            --><input
+              type="text"
+              placeholder="class number"
+              class="class-number"
+            /><!--
+            --><input
+              type="number"
+              placeholder="credits"
+              class="credits"
+              min="1"
+            /><!--
+            --><select name="score" id="score">
+              <option value="A">A</option>
+              <option value="A-">A-</option>
+              <option value="B+">B+</option>
+              <option value="B">B</option>
+              <option value="B-">B-</option>
+              <option value="C+">C+</option>
+              <option value="C">C</option>
+              <option value="C-">C-</option>
+              <option value="D+">D+</option>
+              <option value="D">D</option>
+              <option value="D-">D-</option>
+              <option value="F">F</option></select
+            ><!--
+            --><button class="trash"><i class="fas fa-trash"></i></button>
+          </form>
+          <form class="form1">
+            <input
+              type="text"
+              placeholder="class category"
+              class="class-category"
+              list="opt"
+            /><!--
+            --><input
+              type="text"
+              placeholder="class number"
+              class="class-number"
+            /><!--
+            --><input
+              type="number"
+              placeholder="credits"
+              class="credits"
+              min="1"
+            /><!--
+            --><select name="score" id="score">
+              <option value="A">A</option>
+              <option value="A-">A-</option>
+              <option value="B+">B+</option>
+              <option value="B">B</option>
+              <option value="B-">B-</option>
+              <option value="C+">C+</option>
+              <option value="C">C</option>
+              <option value="C-">C-</option>
+              <option value="D+">D+</option>
+              <option value="D">D</option>
+              <option value="D-">D-</option>
+              <option value="F">F</option></select
+            ><!--
+            --><button class="trash"><i class="fas fa-trash"></i></button>
+          </form>
+          <form class="form1">
+            <input
+              type="text"
+              placeholder="class category"
+              class="class-category"
+              list="opt"
+            /><!--
+            --><input
+              type="text"
+              placeholder="class number"
+              class="class-number"
+            /><!--
+            --><input
+              type="number"
+              placeholder="credits"
+              class="credits"
+              min="1"
+            /><!--
+            --><select name="score" id="score">
+              <option value="A">A</option>
+              <option value="A-">A-</option>
+              <option value="B+">B+</option>
+              <option value="B">B</option>
+              <option value="B-">B-</option>
+              <option value="C+">C+</option>
+              <option value="C">C</option>
+              <option value="C-">C-</option>
+              <option value="D+">D+</option>
+              <option value="D">D</option>
+              <option value="D-">D-</option>
+              <option value="F">F</option></select
+            ><!--
+            --><button class="trash"><i class="fas fa-trash"></i></button>
+          </form>
+        </section>
+
+        <div class="addButton">
+          <button id="add"><i class="fas fa-plus-square"></i></button>
+        </div>
+
+        <section class="result-section">
+          <div class="result">
+            <p class="result-text">Your semester GPA is</p>
+            <h2 class="result-text" id="final-score">0.00</h2>
+          </div>
+        </section>
+      </section>
+    </main>
+
+    <datalist id="opt">
+      <option value="ACCT">Accounting</option>
+      <option value="ASL">American Sign Language</option>
+      <option value="ANTH">Anthropology</option>
+      <option value="ART">Art</option>
+      <option value="BIOL">Biological Science</option>
+      <option value="BUSM">Business Mgt</option>
+      <option value="CRDEV">Career Development</option>
+      <option value="CHEM">Chemistry</option>
+      <option value="CHIN">Chinese</option>
+      <option value="COMM">Communication Studies</option>
+      <option value="CIS">Computer & Information Sciences</option>
+      <option value="CS">Computer Science</option>
+      <option value="CRMJ">Criminal Justice</option>
+      <option value="ECON">Economics</option>
+      <option value="EDU">Education</option>
+      <option value="ELED">Elementary Education</option>
+      <option value="EMGT">Emergency Management</option>
+      <option value="ENGL">English</option>
+      <option value="EIL">English as Int'l Language</option>
+      <option value="ENTR">Entrepreneurship</option>
+      <option value="EXS">Exercise Sport Science</option>
+      <option value="FILM">Film</option>
+      <option value="FIN">Finance</option>
+      <option value="FORS">Forensic Science</option>
+      <option value="FREN">French</option>
+      <option value="GEOG">Geography</option>
+      <option value="HAWN">Hawaiian</option>
+      <option value="HWST">Hawaiian Studies</option>
+      <option value="HLTH">Health</option>
+      <option value="HIST">History</option>
+      <option value="HEC">Home Economics</option>
+      <option value="HTM">Hospitality Tourism Mgt</option>
+      <option value="HUM">Humanities</option>
+      <option value="IS">Information System</option>
+      <option value="IT">Information Technology</option>
+      <option value="ICS">International Cultural Studies</option>
+      <option value="IPB">Intercultural Peacebuilding</option>
+      <option value="JPN">Japanese</option>
+      <option value="LING">Linguistics</option>
+      <option value="AMOR">Maori</option>
+      <option value="MATH">Mathematics</option>
+      <option value="MUSC">Music</option>
+      <option value="OCEN">Oceanography</option>
+      <option value="PAIS">Pacific Island Studies</option>
+      <option value="PHSC">Physical Science</option>
+      <option value="POSC">Political Science</option>
+      <option value="PSYC">Psychology</option>
+      <option value="PMGT">Public Management</option>
+      <option value="REL">Religion</option>
+      <option value="SCI">Science</option>
+      <option value="SAMN">Samoan</option>
+      <option value="SCED">Secondary Education</option>
+      <option value="SOCW">Social Work</option>
+      <option value="SPAN">Spanish</option>
+      <option value="SPED">Special Education</option>
+      <option value="STDEV">Student Development</option>
+      <option value="TESOL">TESOL</option>
+      <option value="THEA">Theatre</option>
+      <option value="TONG">Tongan</option>
+      <option value="WLNG">World Language</option>
+    </datalist>
+    <script src="./app.js"></script>
+  </body>
+</html>
